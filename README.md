@@ -30,7 +30,7 @@ Setting up the sensor is pretty straightforward: Connect the PIR to your Raspber
 <img src="PIR.jpg" height="400" />
 
 For my setup, I connected GND to Pin 06, Power to Pin 04 (+5V) and Output to Pin 07 (GPIO 04):
-<img src="RPiWiring.jpg" width="800" />
+<img src="RPi3Wiring.jpg" width="800" />
 
 With Python's RPi.GPIO module, you can use either board pin numbering or BCM numbering. I chose BCM mode, so the pin number for the python script to watch was 4 (GPIO 04).
 
