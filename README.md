@@ -11,7 +11,7 @@ Because Python on the Raspberry Pi includes modules for easy (and complete) acce
 MMM-PYPIR registers as a Magic Mirror module named 'MMM-PYPIR' and can be activated using the config.js file from MagicMirror.
 At startup, a small Python script is being started with the pin to watch and the pullup/pulldown configuration for this pin.
 This script simply outputs '0' or '1' when the PIN's level changes.
-Every time MMM-PYPIR receives this input, a socketNotification named 'USER_PRESENCE' is being created with 0 or 1 as payload.
+Every time MMM-PYPIR receives this input, a socketNotification named `USER_PRESENCE` is being created with `0` or `1` as payload.
 If `powerSaving` is set to `true`, the monitor is being switched on or off in reaction to the PIR signals.
 Because it can be tricky to adjust the inactivity delay on the PIR sensor itself, I'd suggest setting it to the minimum duration possible (usually 5 seconds) and then add a `powerSavingDelay`. So with 5 seconds HW delay and a `powerSavingDelay` of 10 seconds, the monitor will turn off 15 seconds after the PIR registered the last movement. If you start moving within these 15 seconds, the monitor stays on.
 
