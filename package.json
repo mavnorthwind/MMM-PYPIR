@@ -1,0 +1,14 @@
+{
+  "name": "mmm-pypir",
+  "version": "1.0.0",
+  "description": "MagicMirror module for a PIR sensor using python",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Müller (mav)",
+  "license": "ISC",
+  "dependencies": {
+    "python-shell": "^0.4.0"
+  }
+}
