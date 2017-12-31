@@ -19,3 +19,13 @@ exports.watch = (pin, pull, callback) => {
 		}
 	});
 };
+
+exports.output = (pin, value) => {
+	var options = {
+		mode: 'text',
+		scriptPath: __dirname,
+		args: [ pin, value ]
+	};
+
+	var pyshell = new PythonShell("GPIO_out.py", options);
+};

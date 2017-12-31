@@ -11,11 +11,11 @@ Module.register('MMM-PYPIR',{
 	requiresVersion: "2.1.0",
 
 	defaults: {
-		sensorPin: 4,		// in BCM notation
+		sensorPin: 4,		// PIR pin in BCM notation
 		pullUpDown: 'down', 	// configure the pin for pulldown ('down') or pullup ('up')
 		powerSaving: true,	// turn monitor on/off when the PIR registers movement
 		powerSavingDelay: 10,	// delay (in seconds) after the PIR has stopped registering movement to turn off the monitor
-		LEDPin: 21		// LED pin to mirror the PIR state
+		LEDPin: 21		// LED pin in BCM notation to display the PIR state
 	},
 
 	// Override socket notification handler.

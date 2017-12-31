@@ -36,10 +36,11 @@ module.exports = NodeHelper.create({
 		const self = this;
 		this.config = payload;
 
-		GPIOWatcher.watch(this.config.sensorPIN, this.config.pullUpDown, (pin, value) => {
+		GPIOWatcher.watch(this.config.sensorPin, this.config.pullUpDown, (pin, value) => {
 			console.log(new Date() + " PIR signal received: "+value);
 				if (value == 1) {
 					self.sendSocketNotification("USER_PRESENCE", true);
+					GPIOWatcher.output(self.config.LEDPin, 1);
 					if (self.config.powerSaving) {
 						self.activateMonitor();
 						clearTimeout(self.deactivateMonitorTimeout);
@@ -47,6 +48,7 @@ module.exports = NodeHelper.create({
 				 }
 				 else if (value == 0) {
 					self.sendSocketNotification("USER_PRESENCE", false);
+					GPIOWatcher.output(self.config.LEDPin, 0);
 					if (!self.config.powerSaving){
 							return;
 					}
