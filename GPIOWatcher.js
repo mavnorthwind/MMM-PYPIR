@@ -20,6 +20,16 @@ exports.watch = (pin, pull, callback) => {
 	});
 };
 
+exports.blink = (pin, blinkCount = 3, blinkDuration = 200) => {
+	var options = {
+		mode: 'text',
+		scriptPath: __dirname,
+		args: [ pin, blinkCount, blinkDuration ]
+	};
+
+	var pyshell = new PythonShell("GPIO_out.py", options);
+};
+
 exports.output = (pin, value) => {
 	var options = {
 		mode: 'text',

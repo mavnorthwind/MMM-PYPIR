@@ -32,11 +32,11 @@ module.exports = NodeHelper.create({
 
   // Subclass socketNotificationReceived received.
   socketNotificationReceived: function(notification, payload) {
-    if (notification === 'CONFIG' && this.started == false) {
-		const self = this;
-		this.config = payload;
+    const self = this;
+    if (notification === 'CONFIG' && self.started == false) {
+		self.config = payload;
 
-		GPIOWatcher.watch(this.config.sensorPin, this.config.pullUpDown, (pin, value) => {
+		GPIOWatcher.watch(self.config.sensorPin, self.config.pullUpDown, (pin, value) => {
 			console.log(new Date() + " PIR signal received: "+value);
 				if (value == 1) {
 					self.sendSocketNotification("USER_PRESENCE", true);
@@ -59,7 +59,10 @@ module.exports = NodeHelper.create({
 				}
 		});
 
-		this.started = true;
+		// signal startup by blinking the LED for 2 seconds
+		GPIOWatcher.blink(self.config.LEDPin, 10, 200);
+
+		self.started = true;
     }
   }
 
