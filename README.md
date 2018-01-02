@@ -34,6 +34,8 @@ For my setup, I connected GND to Pin 06, Power to Pin 04 (+5V) and Output to Pin
 
 With Python's RPi.GPIO module, you can use either board pin numbering or BCM numbering. I chose BCM mode, so the pin number for the python script to watch was 4 (GPIO 04).
 
+There's a quite nice overview of the RPi GPIO ports at [w3schools](https://www.w3schools.com/nodejs/nodejs_raspberrypi_gpio_intro.asp), btw.
+
 # Configuration
 As usual, the module can be configured using MagicMirror's config.js file.
 Possible settings contain:
