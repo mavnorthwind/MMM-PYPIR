@@ -47,14 +47,15 @@ module.exports = NodeHelper.create({
 					}
 				 }
 				 else if (value == 0) {
-					self.sendSocketNotification("USER_PRESENCE", false);
 					GPIOWatcher.output(self.config.LEDPin, 0);
 					if (!self.config.powerSaving){
+						self.sendSocketNotification("USER_PRESENCE", false);
 							return;
 					}
 
 					self.deactivateMonitorTimeout = setTimeout(function() {
 						self.deactivateMonitor();
+						self.sendSocketNotification("USER_PRESENCE", false);
 					}, self.config.powerSavingDelay * 1000);
 				}
 		});
