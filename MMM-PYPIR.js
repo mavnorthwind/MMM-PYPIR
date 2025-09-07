@@ -25,6 +25,37 @@ Module.register('MMM-PYPIR',{
 			Log.info('USER_PRESENCE ' + payload + ' received');
 			this.sendNotification(notification, payload); // send notification to other modules
 		}
+		
+		if (notification === 'LIRC' &&
+			payload.repeat < 1) // don't want repeats
+		{
+			Log.info('LIRC '+payload+' received');
+		
+			// interact with newsfeed module upon UP, DOWN, LEFT, RIGHT gesture
+			var newsfeedModules = MM.getModules().withClass('newsfeed');
+
+			if(newsfeedModules){
+
+				var notification = "UNKNOWN";
+
+				if(payload.key == 'KEY_RIGHT'){
+					notification = "ARTICLE_NEXT";
+				} else if(payload.key == 'KEY_LEFT'){
+					notification = "ARTICLE_PREVIOUS";
+				} else if(payload.key == 'KEY_UP'){
+					notification = "ARTICLE_LESS_DETAILS";
+				} else if(payload.key == 'KEY_DOWN'){
+					notification = "ARTICLE_MORE_DETAILS";
+				} else {
+					Log.info('Not handling received gesture in this module directly:');
+				}
+
+				// forward gesture to other modules
+				Log.info('Sending notification: ' + notification + '.');
+				this.sendNotification(notification);
+
+			}
+		}
 	},
 	
 	start: function() {
