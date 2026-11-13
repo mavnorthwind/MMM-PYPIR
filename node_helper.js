@@ -8,7 +8,6 @@
 
 const NodeHelper = require('node_helper');
 const exec = require('child_process').exec;
-const path = require("path");
 const GPIOWatcher = require("./GPIOWatcher");
 const lirc_node = require("./lib/lirc_node");
 
@@ -27,7 +26,7 @@ module.exports = NodeHelper.create({
     // exec("vcgencmd display_power 1", null);
 
     // With Wayland:
-    exec("wlr-randr --output HDMI-A-1 --on", null);
+    this.runMonitorCommand("--on");
     // XDG_RUNTIME_DIR must be set to /run/user/1000 (usually user id of user pi; get by id -u pi)
     // WAYLAND_DISPLAY=wayland-0 (ls /run/user/1000/wayland-*)
   },
@@ -35,7 +34,16 @@ module.exports = NodeHelper.create({
   deactivateMonitor: function () {
     console.info("Turning off monitor");
     // exec("vcgencmd display_power 0", null);
-    exec("wlr-randr --output HDMI-A-1 --off", null);
+    this.runMonitorCommand("--off");
+  },
+
+  runMonitorCommand: function (state) {
+    const output = (this.config && this.config.monitorOutput) || "HDMI-A-1";
+    exec("wlr-randr --output " + output + " " + state, (error, stdout, stderr) => {
+      if (error) {
+        console.error("MMM-PYPIR: wlr-randr failed: " + error.message + (stderr ? " " + stderr.trim() : ""));
+      }
+    });
   },
 
   // Subclass socketNotificationReceived received.
@@ -63,6 +71,7 @@ module.exports = NodeHelper.create({
 							return;
 					}
 
+					clearTimeout(self.deactivateMonitorTimeout);
 					self.deactivateMonitorTimeout = setTimeout(function() {
 						self.deactivateMonitor();
 						self.sendSocketNotification("USER_PRESENCE", false);
@@ -70,14 +79,14 @@ module.exports = NodeHelper.create({
 				}
 		});
 
-		// signal startup by blinking the LED for 2 seconds
+		// signal startup by blinking the LED for about 4 seconds
 		GPIOWatcher.blink(self.config.LEDPin, 10, 200);
 
 		/*
 		// Init lirc and add a listener to send a notification if
 		// a remote control button has been detected
 		lirc_node.init();
-		self. listenerId = lirc_node.addListener(function(data) {
+		self.listenerId = lirc_node.addListener(function(data) {
 			console.info("LIRC data received: "+JSON.stringify(data));
 			self.sendSocketNotification("LIRC", data);
 		});

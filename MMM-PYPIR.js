@@ -15,7 +15,8 @@ Module.register('MMM-PYPIR',{
 		pullUpDown: 'down', 	// configure the pin for pulldown ('down') or pullup ('up')
 		powerSaving: true,	// turn monitor on/off when the PIR registers movement
 		powerSavingDelay: 10,	// delay (in seconds) after the PIR has stopped registering movement to turn off the monitor
-		LEDPin: 21		// LED pin in BCM notation to display the PIR state
+		LEDPin: 21,		// LED pin in BCM notation to display the PIR state
+		monitorOutput: 'HDMI-A-1'	// output name used with wlr-randr to switch the monitor (see: wlr-randr)
 	},
 
 	// Override socket notification handler.
