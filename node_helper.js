@@ -23,12 +23,19 @@ module.exports = NodeHelper.create({
     console.info("Turning on monitor");
     // Easier and more reliable way found on
     // https://pi-buch.info/hdmi-ausgang-unkompliziert-ein-und-ausschalten/
-    exec("vcgencmd display_power 1", null);
+    // DOES NOT WORK ON NEWER PIOS VERSIONS!
+    // exec("vcgencmd display_power 1", null);
+
+    // With Wayland:
+    exec("wlr-randr --output HDMI-A-1 --on", null);
+    // XDG_RUNTIME_DIR must be set to /run/user/1000 (usually user id of user pi; get by id -u pi)
+    // WAYLAND_DISPLAY=wayland-0 (ls /run/user/1000/wayland-*)
   },
 
   deactivateMonitor: function () {
     console.info("Turning off monitor");
-    exec("vcgencmd display_power 0", null);
+    // exec("vcgencmd display_power 0", null);
+    exec("wlr-randr --output HDMI-A-1 --off", null);
   },
 
   // Subclass socketNotificationReceived received.
@@ -66,6 +73,7 @@ module.exports = NodeHelper.create({
 		// signal startup by blinking the LED for 2 seconds
 		GPIOWatcher.blink(self.config.LEDPin, 10, 200);
 
+		/*
 		// Init lirc and add a listener to send a notification if
 		// a remote control button has been detected
 		lirc_node.init();
@@ -73,7 +81,8 @@ module.exports = NodeHelper.create({
 			console.info("LIRC data received: "+JSON.stringify(data));
 			self.sendSocketNotification("LIRC", data);
 		});
-
+		*/
+		
 		self.started = true;
 		console.log("MMM-PYPIR startup complete");
     }
