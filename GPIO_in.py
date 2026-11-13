@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 import sys
 import RPi.GPIO as GPIO
 import time
@@ -11,9 +11,9 @@ try:
 	else:
 		pull = GPIO.PUD_DOWN
 except ValueError:
-	print "Usage: %s <PIN> 'up'/'down'" % sys.argv[0]
-	print "'up' or 'down' defines pullup or pulldown resistor"
-	sys.exit()
+	print("Usage: %s <PIN> 'up'/'down'" % sys.argv[0])
+	print("'up' or 'down' defines pullup or pulldown resistor")
+	sys.exit(1)
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -27,9 +27,9 @@ try:
 		if input != prev:
 			prev = input
 			if prev:
-				print "1"
+				print("1")
 			else:
-				print "0"
+				print("0")
 		time.sleep(0.1)
 
 except KeyboardInterrupt:
