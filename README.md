@@ -27,7 +27,7 @@ For my second mirror I got me an "HC-SR501 PIR MOTION DETECTOR" sensor für just
 
 Setting up the sensor is pretty straightforward: Connect the PIR to your Raspberry Pi using 3 cables: 
 
-<img src="PIR.jpg" height="400" />
+<img src="./PIR.jpg" height="400" />
 
 For my setup, I connected GND to Pin 06, Power to Pin 04 (+5V) and Output to Pin 07 (GPIO 04):
 <img src="RPi3Wiring.jpg" width="800" />
