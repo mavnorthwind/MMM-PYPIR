@@ -39,9 +39,12 @@ module.exports = NodeHelper.create({
 
   runMonitorCommand: function (state) {
     const output = (this.config && this.config.monitorOutput) || "HDMI-A-1";
-    exec("wlr-randr --output " + output + " " + state, (error, stdout, stderr) => {
+// wlr-randr can hang the RPi
+//    exec("wlr-randr --output " + output + " " + state, (error, stdout, stderr) => {
+// Better to use power control
+    exec("wlopm " + state + " " + output, (error, stdout, stderr) => {
       if (error) {
-        console.error("MMM-PYPIR: wlr-randr failed: " + error.message + (stderr ? " " + stderr.trim() : ""));
+        console.error("MMM-PYPIR: wlopm failed: " + error.message + (stderr ? " " + stderr.trim() : ""));
       }
     });
   },
