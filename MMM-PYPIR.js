@@ -16,11 +16,57 @@ Module.register('MMM-PYPIR',{
 		powerSaving: true,	// turn monitor on/off when the PIR registers movement
 		powerSavingDelay: 10,	// delay (in seconds) after the PIR has stopped registering movement to turn off the monitor
 		LEDPin: 21,		// LED pin in BCM notation to display the PIR state
-		monitorOutput: 'HDMI-A-1'	// output name used with wlopm to switch the monitor (see: wlopm)
+		monitorOutput: 'HDMI-A-1',	// output name used with wlopm to switch the monitor (see: wlopm)
+		showCountdown: true	// show a small countdown in the lower right corner before the monitor is turned off
+	},
+
+	getStyles: function() {
+		return ['MMM-PYPIR.css'];
+	},
+
+	getDom: function() {
+		var wrapper = document.createElement('div');
+		wrapper.className = 'pypir-countdown';
+		if (this.countdown > 0) {
+			wrapper.innerHTML = 'Screen off in ' + this.countdown + 's';
+		}
+		return wrapper;
+	},
+
+	startCountdown: function(seconds) {
+		var self = this;
+		this.stopCountdown();
+		this.countdown = Math.ceil(seconds);
+		this.updateDom();
+		this.countdownInterval = setInterval(function() {
+			self.countdown--;
+			if (self.countdown <= 0) {
+				self.stopCountdown();
+			} else {
+				self.updateDom();
+			}
+		}, 1000);
+	},
+
+	stopCountdown: function() {
+		clearInterval(this.countdownInterval);
+		this.countdownInterval = undefined;
+		if (this.countdown) {
+			this.countdown = 0;
+			this.updateDom();
+		}
 	},
 
 	// Override socket notification handler.
 	socketNotificationReceived: function(notification, payload) {
+		if (notification === 'COUNTDOWN_START' && this.config.showCountdown) {
+			this.startCountdown(payload.seconds);
+		}
+
+		if (notification === 'COUNTDOWN_CANCEL') {
+			this.stopCountdown();
+		}
+
 		if (notification === 'USER_PRESENCE')
 		{
 			Log.info('USER_PRESENCE ' + payload + ' received');

@@ -45,6 +45,7 @@ config: {
   pullUpDown: 'down',   // configure the pin for pulldown ('down') or pullup ('up')
   powerSaving: true,    // turn monitor on/off when the PIR registers movement
   powerSavingDelay: 10, // delay (in seconds) after the PIR has stopped registering movement to turn off the monitor
+  showCountdown: true, // show a small countdown in the lower right corner before the monitor turns off
   LEDPin: 21            // Pin number in BCM notation to display the PIR state
 }
 ```

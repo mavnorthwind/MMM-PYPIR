@@ -68,6 +68,7 @@ module.exports = NodeHelper.create({
 					if (self.config.powerSaving) {
 						self.activateMonitor();
 						clearTimeout(self.deactivateMonitorTimeout);
+						self.sendSocketNotification("COUNTDOWN_CANCEL");
 					}
 				 }
 				 else if (value == 0) {
@@ -79,8 +80,10 @@ module.exports = NodeHelper.create({
 					}
 
 					clearTimeout(self.deactivateMonitorTimeout);
+					self.sendSocketNotification("COUNTDOWN_START", { seconds: self.config.powerSavingDelay });
 					self.deactivateMonitorTimeout = setTimeout(function() {
 						self.deactivateMonitor();
+						self.sendSocketNotification("COUNTDOWN_CANCEL");
 						self.sendSocketNotification("USER_PRESENCE", false);
 					}, self.config.powerSavingDelay * 1000);
 				}
