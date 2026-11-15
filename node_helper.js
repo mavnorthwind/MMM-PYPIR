@@ -42,9 +42,13 @@ module.exports = NodeHelper.create({
 // wlr-randr can hang the RPi
 //    exec("wlr-randr --output " + output + " " + state, (error, stdout, stderr) => {
 // Better to use power control
-    exec("wlopm " + state + " " + output, (error, stdout, stderr) => {
+// We need WAYLAND_DISPLAY set for that and we must NOT have a vnc connection
+// or else wlopm will fail
+    const command = `export WAYLAND_DISPLAY=wayland-0 && wlopm ${state} ${output}`;
+
+    exec(command, (error, stdout, stderr) => {
       if (error) {
-        console.error("MMM-PYPIR: wlopm failed: " + error.message + (stderr ? " " + stderr.trim() : ""));
+        console.error(`MMM-PYPIR: ${command} failed: ${error.message} {(stderr ? " " + stderr.trim() : "")}`);
       }
     });
   },
